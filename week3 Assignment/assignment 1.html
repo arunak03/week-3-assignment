@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search and Highlight</title>
+    <style>
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        body{
+            text-align: center;
+            margin: 100px auto;
+            background: linear-gradient(45deg, #87259e, #ff99cc);
+        }
+        p{
+            width: 800px;
+            height:400px;
+            margin: auto;
+            text-align: justify;
+            font-size: medium;
+        }
+        button{
+            background-color: #1b1374cc;
+            width: 100px;
+            height: 30px;
+            color: white;
+        }
+        #searchInput{
+            width:400px;
+            height:30px;
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>Search and Highlight</h1>
+    <input type="text" id="searchInput" >
+    <button class="searchbtn">Search</button>
+    <button class="clearbtn">Clear Search</button>
+    <br>
+    <br>
+    <br>
+    <p id="paragraph">
+        Developing writers can often benefit from examining an essay, a paragraph, or even a sentence to determine what makes it effective. On the following pages are several paragraphs for you to evaluate on your own, along with the Writing Center's explanation.
+        These passages are excerpted from actual student papers and retain the original wording. Some of the sentences are imperfect, but we have chosen these passages to highlight areas in which the author was successful.
+        Paragraphs are the building blocks of papers. Many students define paragraphs in terms of length: a paragraph is a group of at least five sentences, a paragraph is half a page long, etc. In reality, though, the unity and coherence of ideas among sentences is what constitutes a paragraph. A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). Length and appearance do not determine whether a section in a paper is a paragraph. For instance, in some styles of writing, particularly journalistic styles, a paragraph can be just one sentence long. Ultimately, a paragraph is a sentence or group of sentences that support one main idea. In this handout, we will refer to this as the “controlling idea,” 
+        because it controls what happens in the rest of the paragraph.
+    </p>
+
+
+    <script>
+        function highlightText() {
+            var searchText = document.getElementById("searchInput").value;
+            var paragraph = document.getElementById("paragraph");
+            var innerHTML = paragraph.innerHTML;
+            var index = innerHTML.toLowerCase().indexOf(searchText.toLowerCase());
+    
+            var newText = "";
+            while (index !== -1) {
+                newText += innerHTML.substring(0, index);
+                newText += "<span class='highlight'>" + innerHTML.substring(index, index + searchText.length) + "</span>";
+                innerHTML = innerHTML.substring(index + searchText.length);
+                index = innerHTML.toLowerCase().indexOf(searchText.toLowerCase());
+            }
+            newText += innerHTML;
+            paragraph.innerHTML = newText;
+        }
+
+        function clearhighlight() {
+            var paragraph = document.getElementById("paragraph");
+            var spans = paragraph.querySelectorAll("span.highlight");
+
+            for (var i = 0; i < spans.length; i++) {
+                var parent = spans[i].parentNode;
+                var text = spans[i].textContent;
+                parent.replaceChild(document.createTextNode(text), spans[i]);
+            }
+        }
+
+        function init() {
+            document.getElementsByClassName("searchbtn")[0].addEventListener("click", highlightText);
+            document.getElementsByClassName("clearbtn")[0].addEventListener("click", clearhighlight);
+        }
+
+        document.addEventListener("DOMContentLoaded", init);
+    </script>
+</body>
+</html>
